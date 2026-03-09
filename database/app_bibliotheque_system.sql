@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : sam. 07 mars 2026 à 16:04
+-- Généré le : lun. 09 mars 2026 à 17:56
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -194,15 +194,20 @@ CREATE TABLE `users` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `is_deleted` tinyint(1) DEFAULT 0,
-  `remember_token` varchar(255) DEFAULT NULL
+  `remember_token` varchar(255) DEFAULT NULL,
+  `added_by` varchar(255) DEFAULT NULL,
+  `updated_by` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`user_uuid`, `username`, `user_email`, `user_phone_number`, `user_password`, `user_role`, `user_status`, `counter_connection`, `is_new_user`, `first_connection_date`, `last_connection_date`, `user_picture`, `created_at`, `deleted_at`, `updated_at`, `is_deleted`, `remember_token`) VALUES
-('98b4df4a-17ea-11f1-b627-2c5f5795e6c2', 'admin', 'admin@gmail.com', '237600000000', '$2y$10$s.DIfIFXIWesGeN6WkbKdeKNgmeIjcVQ1k3Ap/kquZJa5Il6JDUI6', 'admin', 'active', 7, 0, '2026-03-04 17:41:28', '2026-03-07 14:37:08', NULL, '2026-03-04 16:52:57', NULL, '2026-03-07 14:37:08', 0, '39b092ef95806ab1f7954833935b740f6f0355a2402fadae840eaddd45e5bd71');
+INSERT INTO `users` (`user_uuid`, `username`, `user_email`, `user_phone_number`, `user_password`, `user_role`, `user_status`, `counter_connection`, `is_new_user`, `first_connection_date`, `last_connection_date`, `user_picture`, `created_at`, `deleted_at`, `updated_at`, `is_deleted`, `remember_token`, `added_by`, `updated_by`, `address`) VALUES
+('90e37608463363a67c2e676642e93aba', 'User System', 'user_system@gmail.com', '678536884', '$2y$10$bac1g7XzTHpuao3KC9nB4.G2FEu5qSAqc25gBusmSzWb0xbytyAva', 'system', 'active', 1, NULL, '2026-03-09 09:38:23', '2026-03-09 09:38:23', '../uploads/69ae923e9e8c8-GTLABO-logo-1750339740.png', '2026-03-09 09:07:13', NULL, '2026-03-09 09:38:23', 0, '31f7521a8fc7db73f601aba34a398244352a95ae6675aebf06318fef30872dc0', '98b4df4a-17ea-11f1-b627-2c5f5795e6c2', '98b4df4a-17ea-11f1-b627-2c5f5795e6c2', 'Limbé'),
+('98b4df4a-17ea-11f1-b627-2c5f5795e6c2', 'User Admin', 'admin@gmail.com', '237600000000', '$2y$10$s.DIfIFXIWesGeN6WkbKdeKNgmeIjcVQ1k3Ap/kquZJa5Il6JDUI6', 'admin', 'active', 12, 0, '2026-03-04 17:41:28', '2026-03-09 10:16:58', NULL, '2026-03-04 16:52:57', NULL, '2026-03-09 10:16:58', 0, 'a4fc6c4190d038d5e4a84195112ec331463b6bd7dab3f381a5c2b25dfb597311', NULL, '98b4df4a-17ea-11f1-b627-2c5f5795e6c2', 'Bafoussam'),
+('a63b98aa619fcf6f3ab11afe7eeb72dd', 'User Manager', 'user_manager@gmail.com', '654349087', '$2y$10$Fu7yG522k3FZO0y2d9GD..XC7ljQt2PoI5qPjrCtX7mtwrVtqUUmO', 'system', 'active', 3, 0, '2026-03-09 09:52:28', '2026-03-09 10:01:25', '../uploads/69ae962de1a46-WORFLOW 002.jpg', '2026-03-09 09:43:09', NULL, '2026-03-09 10:01:25', 0, 'ec08c558b377127f77f0e3d959eef3a614a673ffaba5e36533d16016dbbd7d4b', '98b4df4a-17ea-11f1-b627-2c5f5795e6c2', NULL, 'Garoua');
 
 --
 -- Index pour les tables déchargées
@@ -266,7 +271,9 @@ ALTER TABLE `genre_books`
 -- Index pour la table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_uuid`);
+  ADD PRIMARY KEY (`user_uuid`),
+  ADD KEY `added_by` (`added_by`),
+  ADD KEY `updated_by` (`updated_by`);
 
 --
 -- Contraintes pour les tables déchargées
@@ -301,6 +308,13 @@ ALTER TABLE `emprunter`
 --
 ALTER TABLE `frogot_password`
   ADD CONSTRAINT `FK_FROGOT_P_DEMANDE_D_USERS` FOREIGN KEY (`user_uuid`) REFERENCES `users` (`user_uuid`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`added_by`) REFERENCES `users` (`user_uuid`),
+  ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`updated_by`) REFERENCES `users` (`user_uuid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
