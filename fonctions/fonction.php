@@ -95,3 +95,35 @@ $total_pages = ceil($total_authors / $limit); // Nombre total de pages
 
 // 4. Exécution de la récupération
 $all_authors = get_all_authors_paginated($connexion, $current_page, $limit);
+
+
+
+function get_all_users_paginated($connexion, $page, $limit) {
+
+    $offset = ($page - 1) * $limit;
+
+    $sql = "SELECT u.*, 
+                   a.username AS added_by_name, 
+                   e.username AS updated_by_name
+            FROM users u
+            LEFT JOIN users a ON u.added_by = a.user_uuid
+            LEFT JOIN users e ON u.updated_by = e.user_uuid
+            WHERE u.is_deleted = 0
+            ORDER BY u.created_at DESC
+            LIMIT :limit OFFSET :offset";
+
+    $requete = $connexion->prepare($sql);
+
+    $requete->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+    $requete->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
+
+    $requete->execute();
+
+    return $requete->fetchAll(PDO::FETCH_ASSOC);
+}
+$total_users_query = $connexion->query("SELECT COUNT(*) FROM users WHERE is_deleted = 0");
+
+$total_users = $total_users_query->fetchColumn();
+
+$total_pages = ceil($total_users / $limit);
+$all_users = get_all_users_paginated($connexion, $current_page, $limit);

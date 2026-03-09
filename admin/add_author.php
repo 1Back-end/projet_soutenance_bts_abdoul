@@ -30,22 +30,22 @@
             <div class="row mt-3">
                 <div class="col-lg-6 col-sm-12 mb-3">
                     <div class="mb-3">
-                        <label for="author_full_name" class="form-label">Nom complet <span class="text-danger fs-5">*</span></label>
-                        <input type="text" required class="form-control form-control-lg" id="author_full_name" name="author_full_name">
+                        <label for="author_full_name"  class="form-label">Nom complet <span class="text-danger fs-5">*</span></label>
+                        <input type="text" required value="<?= $_POST['author_full_name'] ?? '' ?>" class="form-control form-control-lg" id="author_full_name" name="author_full_name">
                         <div class="invalid-feedback">
                             Ce champ est requis !
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="author_email" class="form-label">Email <span class="text-danger fs-5">*</span></label>
-                        <input type="email" class="form-control ps-2 py-3 form-control-lg" required id="author_email" name="author_email">
+                        <input type="email" value="<?= $_POST['author_email'] ?? '' ?>" class="form-control ps-2 py-3 form-control-lg" required id="author_email" name="author_email">
                         <div class="invalid-feedback">
                             Ce champ est requis !
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="author_nationality" class="form-label">Nationalité <span class="text-danger fs-5">*</span></label>
-                        <input type="text" class="form-control ps-2 py-3 form-control-lg" required id="author_nationality" name="author_nationality">
+                        <input type="text" value="<?= $_POST['author_nationality'] ?? '' ?>" class="form-control ps-2 py-3 form-control-lg" required id="author_nationality" name="author_nationality">
                         <div class="invalid-feedback">
                             Ce champ est requis !
                         </div>
@@ -55,26 +55,26 @@
                 <div class="col-lg-6 col-sm-12 mb-3">
                     <div class="mb-3">
                         <label for="author_phone_number" class="form-label">Numéro de téléphone <span class="text-danger fs-5">*</span></label>
-                        <input type="tel" class="form-control ps-2 py-3 form-control-lg" required id="author_phone_number" name="author_phone_number">
+                        <input type="tel" value="<?= $_POST['author_phone_number'] ?? '' ?>" class="form-control ps-2 py-3 form-control-lg" required id="author_phone_number" name="author_phone_number">
                         <div class="invalid-feedback">
                             Ce champ est requis !
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="author_second_phone_number" class="form-label">Numéro de téléphone secondaire</label>
-                        <input type="tel" class="form-control ps-2 py-3 form-control-lg" id="author_second_phone_number" name="author_second_phone_number">
+                        <input type="tel"  value="<?= $_POST['author_second_phone_number'] ?? '' ?>" class="form-control ps-2 py-3 form-control-lg" id="author_second_phone_number" name="author_second_phone_number">
                     </div>
                     <div class="mb-3">
                         <label for="author_picture" class="form-label">Photo de profil</label>
-                        <input type="file" class="form-control form-control-lg" id="author_picture" name="author_picture" accept="image/*">
+                        <input type="file"  value="<?= $_POST['author_picture'] ?? '' ?>" class="form-control form-control-lg" id="author_picture" name="author_picture" accept="image/*">
                     </div>
                 </div>
             </div>
             <div class="d-flex gap-2">
-            <button type="submit" name="submit" class="btn btn-primary shadow-none px-4">
+            <button type="submit" name="submit" class="btn btn-primary shadow-none">
                 Enregistrer
             </button>
-            <a href="authors.php" class="btn btn-secondary shadow-none px-4 mx-2">
+            <a href="authors.php" class="btn btn-secondary shadow-none mx-2">
                 Retour
             </a>
         

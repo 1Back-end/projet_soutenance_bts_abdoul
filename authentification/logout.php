@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Détruire toutes les variables de session
 session_unset();
@@ -7,7 +9,12 @@ session_unset();
 // Détruire la session
 session_destroy();
 
-// Rediriger l'utilisateur vers la page de connexion
+// Supprimer le cookie Remember Me si existant
+if (isset($_COOKIE['remember_me'])) {
+    setcookie('remember_me', '', time() - 3600, '/'); // expire le cookie
+}
+
+// Rediriger vers login
 header("Location: ../authentification/login.php");
 exit();
 ?>

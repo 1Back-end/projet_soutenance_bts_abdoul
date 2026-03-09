@@ -11,19 +11,16 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<!-- Fontfaces CSS -->
 	<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-iEUCYXZQBrGKEj6Xj9YWDqTinQFPw7Dx6dIDMnF+NPJbCjZZScsik3XR1nNJvVKRtkiIqgcbnepvI9gypYNE1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous">
 	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 	<link rel="stylesheet" type="text/css" href="../assets/vendors/styles/core.css">
 	<link rel="stylesheet" type="text/css" href="../assets/vendors/styles/icon-font.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/vendors/styles/style.css">
 	<link rel="stylesheet" type="text/css" href="../assets/vendors/styles/main.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-	<link rel="stylesheet" href="notification.css">
-<!-- Boxicons CSS -->
+	
 	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-	<link href="../assets/vendors/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    
+	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
 
@@ -58,8 +55,16 @@
 				<div class="dropdown">
 					<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
 					<span class="user-icon shadow-none">
-					<img class='rounded-circle img-fluid text-center' src="<?php echo !empty($_SESSION['photo']) ? '../uploads/' . $_SESSION['photo'] : '../assets/vendors/images/profile.png'; ?>">
-					<span class="online-indicator"></span>
+					<div class="profile-wrapper position-relative d-inline-block">
+						<img class="rounded-circle img-fluid" 
+							src="<?= !empty($_SESSION['photo']) ? '../uploads/' . htmlspecialchars($_SESSION['photo']) : '../assets/vendors/images/profile.png'; ?>" 
+							alt="Photo de profil" 
+							style="width: 50px; height: 50px; object-fit: cover;">
+
+						<!-- Indicateur en ligne -->
+						<span class="online-indicator position-absolute rounded-circle border border-white"
+							style="width: 15px; height: 15px; background-color: #28a745; bottom: 0; right: 0;"></span>
+					</div>
 				</span>
 
 					<small class="user-name fw-bold"><?php echo htmlspecialchars($_SESSION['username']); ?></small>
@@ -133,11 +138,9 @@
 	<script src="../assets/vendors/scripts/script.min.js"></script>
 	<script src="../assets/vendors/scripts/process.js"></script>
 	<script src="../assets/vendors/scripts/layout-settings.js"></script>
-	<script src="../assets/src/plugins/apexcharts/apexcharts.min.js"></script>
+	
 	<script src="../assets/src/plugins/datatables/js/jquery.dataTables.min.js"></script>
-	<script src="../assets/src/plugins/datatables/js/dataTables.bootstrap4.min.js"></script>
 	<script src="../assets/src/plugins/datatables/js/dataTables.responsive.min.js"></script>
 	<script src="../assets/src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
-	<script src="../assets/vendors/scripts/dashboard.js"></script>
 </body>
 </html>

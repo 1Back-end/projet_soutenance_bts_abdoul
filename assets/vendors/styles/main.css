@@ -29,6 +29,17 @@ li a{
   font-style: normal;
 }
 
+.dropdown-item{
+  font-family: "Outfit", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+.user-name{
+  font-family: "Outfit", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
 
 .custom-file-input,.custom-file-label,.custom-select,.form-control {
     font-family: "Outfit", sans-serif;

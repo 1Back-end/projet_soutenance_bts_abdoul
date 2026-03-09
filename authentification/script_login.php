@@ -55,7 +55,8 @@ if (isset($_POST["submit"])) {
                 // 6. LOGIQUE DE REDIRECTION (Nouvel utilisateur ou non)
                 if ($user['is_new_user'] == 1) {
                     // C'est sa première connexion ou il doit changer son mot de passe
-                    header("Location: ../authentification/change_password.php");
+                    header("Location: ../authentification/change_password.php?user_uuid=" . urlencode($user['user_uuid']));
+                    exit;
                 } else {
                     // Utilisateur déjà actif
                     header("Location: ../admin/dashboard.php");
