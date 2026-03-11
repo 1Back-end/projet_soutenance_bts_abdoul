@@ -33,6 +33,7 @@
         <?php include_once("../components/featured_books.php");?>
         <?php include_once("../components/about_section_01.php");?>
         <?php include_once("../components/books_section.php");?>
+        <?php include_once("../components/books_section.php");?>
     </main>
 
 
