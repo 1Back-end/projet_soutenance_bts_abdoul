@@ -8,7 +8,7 @@
                 <h3 class="h3 mb-0 text-gray-800 text-uppercase fw-bold">Liste des catégories de livres</h3>
             </div>
             <div class="ml-auto">
-                <a href="add_category_book.php" class="btn shadow-none btn-primary fw-bold">
+                <a href="add_category_books.php" class="btn shadow-none btn-primary fw-bold">
                     <i class="fas fa-plus-circle"></i> Ajouter une nouvelle catégorie
                 </a>
             </div>
@@ -31,11 +31,11 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Nom</th>
+                            <th>Categorie</th>
                             <th>Description</th>
-                            <th>is_active</th>
-                            <th>created_at</th>
-                            <th>updated_at</th>
+                            <th>Statut</th>
+                            <th>Date de creation</th>
+                            <th>Date de modif.</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -44,23 +44,25 @@
                             <?php foreach ($all_category_books as $index => $category_book): ?>
                                 <tr>
                                     <td><?= $index + 1 ?></td>
-                                    <td><?= htmlspecialchars($category_book['name']) ?></td>
-                                    <td><?= htmlspecialchars($category_book['description']) ?></td>
+                                    <td><?= htmlspecialchars($category_book['category_name']) ?></td>
+                                    <td><?= htmlspecialchars($category_book['category_description']) ?></td>
                                     <td>
                                         <span class="badge <?= $category_book['is_active'] == 1 ? 'bg-success' : 'bg-danger' ?> text-white">
                                             <?= $category_book['is_active'] == 1 ? 'Actif' : 'Inactif' ?>
                                         </span>
                                     </td>
                                     <td>
-                                        <small class="text-muted"><?= date('d/m/Y à H:i', strtotime($category_book['created_at'])) ?></small>
+                                        <span class="text-primary fw-bold"><?= htmlspecialchars($category_book['creator_name'] ?? 'Système') ?></span><br>
+                                        <small class="text-muted">le <?= date('d/m/Y à H:i', strtotime($category_book['created_at'])) ?></small>
                                     </td>
                                     <td>
-                                        <?php if ($category_book['updated_at']): ?>
-                                            <small class="text-muted"><?= date('d/m/Y à H:i', strtotime($category_book['updated_at'])) ?></small>
-                                        <?php else: ?>
-                                            -
-                                        <?php endif; ?>
-                                    </td>
+                                    <?php if ($category_book['updated_at']): ?>
+                                        <span class="text-primary fw-bold"><?= htmlspecialchars($category_book['editor_name'] ?? '') ?></span><br>
+                                        <small class="text-muted">le <?= date('d/m/Y à H:i', strtotime($category_book['updated_at'])) ?></small>
+                                    <?php else: ?>
+                                        -
+                                    <?php endif; ?>
+                                </td>
                                     <td>
                                         <div class="dropdown">
                                             <button class="btn shadow-none" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -69,26 +71,21 @@
 
                                             <div class="dropdown-menu p-2 shadow-lg">
                                                 <a class="btn btn-outline-warning d-flex align-items-center w-100 mb-2"
-                                                   href="edit_category_book.php?uuid=<?= $category_book['uuid'] ?>">
+                                                   href="edit_category_books.php?category_uuid=<?= $category_book['category_uuid'] ?>">
                                                     <i class="fa-solid fa-pen-to-square me-2"></i> Modifier
                                                 </a>
 
                                                 <?php if ($category_book['is_active'] == 1): ?>
                                                     <a class="btn btn-outline-danger d-flex align-items-center w-100 mb-2"
-                                                       href="deactivate_category_book.php?uuid=<?= $category_book['uuid'] ?>">
+                                                       href="deactivate_category_books.php?category_uuid=<?= $category_book['category_uuid'] ?>">
                                                         <i class="fa-solid fa-toggle-off me-2"></i> Désactiver
                                                     </a>
                                                 <?php else: ?>
                                                     <a class="btn btn-outline-success d-flex align-items-center w-100 mb-2"
-                                                       href="activate_category_book.php?uuid=<?= $category_book['uuid'] ?>">
+                                                       href="activate_category_books.php?category_uuid=<?= $category_book['category_uuid'] ?>">
                                                         <i class="fa-solid fa-toggle-on me-2"></i> Activer
                                                     </a>
                                                 <?php endif; ?>
-
-                                                <a class="btn btn-outline-danger d-flex align-items-center w-100"
-                                                   href="delete_category_book.php?uuid=<?= $category_book['uuid'] ?>">
-                                                    <i class="fa-solid fa-trash me-2"></i> Supprimer
-                                                </a>
                                             </div>
                                         </div>
                                     </td>

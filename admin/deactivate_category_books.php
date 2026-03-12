@@ -3,15 +3,15 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 include("../database/connexion.php");
 
-if (isset($_GET['category_books_uuid'])) {
-    $category_books_uuid = $_GET['category_books_uuid'];
+if (isset($_GET['category_uuid'])) {
+    $category_uuid = $_GET['category_uuid'];
 
     try {
-        $sql = "UPDATE category_books SET is_active = 0, updated_at = NOW() WHERE category_books_uuid = :category_books_uuid";
+        $sql = "UPDATE category_books SET is_active = 0, updated_at = NOW() WHERE category_uuid = :category_uuid";
         $stmt = $connexion->prepare($sql);
         
         // Correction 2 : Suppression de bindParam(':status') qui n'existe plus dans le SQL
-        $stmt->bindParam(':category_books_uuid', $category_books_uuid, type: PDO::PARAM_STR);
+        $stmt->bindParam(':category_uuid', $category_uuid, type: PDO::PARAM_STR);
         $stmt->execute();
 
         $message = 'categorie désactivé avec succès.';

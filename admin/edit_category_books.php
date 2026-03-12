@@ -8,26 +8,22 @@ if (!isset($_GET['category_uuid'])) {
     exit();
 }
 
-$category_uuid = $_GET['category_books_uuid'];
+$category_uuid = $_GET['category_uuid'];
 
 $sql = "SELECT * FROM category_books 
-        WHERE category_books_uuid = :category_books_uuid 
+        WHERE category_uuid = :category_uuid 
         AND is_deleted = 0 
         LIMIT 1";
 
 $stmt = $connexion->prepare($sql);
-$stmt->bindParam(':category_books_uuid', $category_books_uuid, PDO::PARAM_STR);
+$stmt->bindParam(':category_uuid', $category_uuid, PDO::PARAM_STR);
 $stmt->execute();
 
 $category_books = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$category) {
-    header('Location: category_books.php?message=' . urlencode('Catégorie non trouvée.') . '&type=warning');
-    exit();
-}
 ?>
 <div class="main-container pb-5 mt-3">
-    <div class="col-md-12 col-sm-12 mb-3">
+    <div class="col-md-6 col-sm-12 mb-3">
         <?php include("process_edit_category_books.php") ?>  
 
         <?php if (!empty($erreur)) : ?>
@@ -43,7 +39,7 @@ if (!$category) {
         <?php endif; ?>
     </div>
 
-    <div class="col-md-12 col-sm-12 mb-3">
+    <div class="col-md-6 col-sm-12 mb-3">
         <div class="card shadow p-4 border rounded">
 
             <div class="d-flex justify-content-between gap-2 flex-column flex-lg-row">
@@ -52,43 +48,30 @@ if (!$category) {
 
             <form class="needs-validation" novalidate action="" method="post" enctype="multipart/form-data">
                 <div class="row mt-3">
-                    <div class="col-lg-6 col-sm-12 mb-3">
+                    <div class="col-lg-12 col-sm-12 mb-3">
                         <div class="mb-3">
-                            <label for="category_books_name" class="form-label">Nom de la catégorie <span class="text-danger fs-5">*</span></label>
-                            <input type="text" required class="form-control form-control-lg" id="category_books_name" name="category_books_name"
-                            value="<?= htmlspecialchars($category['category_books_name']) ?>">
+                            <label for="category_name " class="form-label">Nom de la catégorie <span class="text-danger fs-5">*</span></label>
+                            <input type="text" required class="form-control form-control-lg" id="category_name" name="category_name"
+                            value="<?= htmlspecialchars($category_books['category_name']) ?>">
                             <div class="invalid-feedback">
                                 Ce champ est requis !
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="category_books_description" class="form-label">Description</label>
-                            <textarea class="form-control form-control-lg" id="category_description" name="category_books_description" rows="4"><?= htmlspecialchars($category['category_books_description']) ?></textarea>
+                            <label for="category_description" class="form-label">Description</label>
+                            <textarea style="height:100px" class="form-control form-control-lg" id="category_description" name="category_description" rows="4"><?= htmlspecialchars($category_books['category_description']) ?></textarea>
                         </div>
                     </div>
-
-                    <div class="col-lg-6 col-sm-12 mb-3">
-                        <div class="mb-3">
-                            <label for="category_status" class="form-label">Statut</label>
-                            <select class="form-select form-select-lg" id="category_books_is_active" name="category_books_is_active">
-                                <option value="1" <?= ($category_books['is_active'] == 1) ? 'selected' : '' ?>>Actif</option>
-                                <option value="0" <?= ($category_books['is_active'] == 0) ? 'selected' : '' ?>>Inactif</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="category_books_image" class="form-label">Image de la catégorie</label>
-                            <input type="file" class="form-control form-control-lg" id="category_books_image" name="category_books_image" accept="image/*">
-                        </div>
                     </div>
-                </div>
 
-                <div class="d-flex gap-2">
+                    <div class="d-flex gap-2">
                     <button type="submit" name="submit" class="btn btn-primary shadow-none px-4">
                         Modifier
                     </button>
                     <a href="category_books.php" class="btn btn-secondary shadow-none px-4 mx-2">
                         Retour
                     </a>
+                </div>
                 </div>
             </form>
 

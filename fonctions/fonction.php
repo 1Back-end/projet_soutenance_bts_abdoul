@@ -127,3 +127,36 @@ $total_users = $total_users_query->fetchColumn();
 
 $total_pages = ceil($total_users / $limit);
 $all_users = get_all_users_paginated($connexion, $current_page, $limit);
+
+
+
+// 2. Fonction pour récupérer les auteurs avec LIMIT et OFFSET
+function get_all_category_paginated($connexion, $page, $limit) {
+    $offset = ($page - 1) * $limit;
+
+    $sql = "SELECT 
+                c.*, 
+                u1.username AS creator_name, 
+                u2.username AS editor_name
+            FROM category_books c
+            LEFT JOIN users u1 ON c.added_by = u1.user_uuid
+            LEFT JOIN users u2 ON c.updated_by = u2.user_uuid
+            WHERE c.is_deleted = 0
+            ORDER BY c.created_at DESC
+            LIMIT :limit OFFSET :offset";
+            
+    $requete = $connexion->prepare($sql);
+    $requete->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+    $requete->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
+    $requete->execute();
+    
+    return $requete->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// 3. Calcul du total pour la pagination
+$total_category_books_query = $connexion->query("SELECT COUNT(*) FROM category_books WHERE is_deleted = 0");
+$total_category_books = $total_category_books_query->fetchColumn();
+$total_pages = ceil($total_category_books / $limit); // Nombre total de pages
+
+// 4. Exécution de la récupération
+$all_category_books = get_all_category_paginated($connexion, $current_page, $limit);
