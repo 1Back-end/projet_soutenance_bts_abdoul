@@ -55,7 +55,6 @@ function getCurrentDateTime() {
 }
 
 
-
 include("../database/connexion.php");
 
 
@@ -160,3 +159,97 @@ $total_pages = ceil($total_category_books / $limit); // Nombre total de pages
 
 // 4. Exécution de la récupération
 $all_category_books = get_all_category_paginated($connexion, $current_page, $limit);
+
+
+function get_all_active_genres($connexion) {
+    // On filtre sur is_active = 1 (ou true)
+    $requete = $connexion->prepare("SELECT * FROM genre_books WHERE is_active = 1 ORDER BY genre_name ASC");
+    $requete->execute();
+    return $requete->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Utilisation
+$all_genres_active = get_all_active_genres($connexion);
+
+
+function get_all_active_categories($connexion){
+    // On filtre pour ne prendre que les catégories actives et non supprimées
+    $requete = $connexion->prepare("SELECT * FROM category_books WHERE is_active = 1 AND is_deleted = 0 ORDER BY category_name ASC");
+    $requete->execute();
+    return $requete->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Appel de la fonction
+$all_categories_active = get_all_active_categories($connexion);
+
+
+function get_all_active_authors($connexion){
+    // On sélectionne les auteurs actifs (is_active = 1) et non supprimés (is_deleted = 0)
+    $requete = $connexion->prepare("SELECT * FROM authors WHERE is_active = 1 AND is_deleted = 0 ORDER BY author_full_name ASC");
+    $requete->execute();
+    return $requete->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Appel de la fonction pour alimenter votre formulaire
+$all_authors_active = get_all_active_authors($connexion);
+
+function get_years() {
+    $current_year = date('Y'); // Année actuelle
+    $years = [];
+    
+    // Générer les années de 1960 jusqu'à l'année actuelle
+    for ($year = 1960; $year <= $current_year; $year++) {
+        $years[] = $year;
+    }
+
+    return $years;
+}
+// Exemple d'utilisation
+$years = get_years();
+
+
+
+
+
+// Fonction pour récupérer les livres avec pagination
+function get_all_books_paginated($connexion, $page, $limit) {
+    try {
+       $offset = ($page - 1) * $limit;
+
+       $query = "SELECT 
+            b.*, 
+            c.category_name, 
+            g.genre_name, 
+            a.author_full_name, 
+            u_added.username AS created_by, 
+            u_updated.username AS updated_by
+          FROM books b
+          INNER JOIN category_books c ON b.category_uuid = c.category_uuid
+          INNER JOIN genre_books g ON b.genre_uuid = g.genre_uuid
+          INNER JOIN authors a ON b.author_uuid = a.author_uuid
+          LEFT JOIN users u_added ON b.added_by = u_added.user_uuid
+          LEFT JOIN users u_updated ON b.updated_by = u_updated.user_uuid
+          WHERE b.is_deleted = 0
+          ORDER BY b.created_at DESC
+          LIMIT :limit OFFSET :offset";
+
+        $stmt = $connexion->prepare($query);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        // En production, il vaut mieux logger l'erreur que de l'afficher
+        error_log("Erreur SQL : " . $e->getMessage());
+        return [];
+    }
+}
+
+$total_books_query = $connexion->query("SELECT COUNT(*) FROM books WHERE is_deleted = 0");
+$total_books = $total_books_query->fetchColumn();
+$total_pages = ceil($total_books / $limit);
+
+// 2. Récupération des livres avec la fonction corrigée
+$all_books = get_all_books_paginated($connexion, $current_page, $limit);

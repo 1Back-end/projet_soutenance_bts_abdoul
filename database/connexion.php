@@ -1,3 +1,5 @@
+
+
 <?php
 // Paramètres de connexion
 $host = 'localhost';
@@ -7,7 +9,7 @@ $password = '';
 
 try {
     // Créer une nouvelle instance de connexion
-    $connexion = new PDO("mysql:host=$host;port=3377;dbname=$dbname;charset=utf8", $username, $password);
+    $connexion = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
     
     // Configurer connexion pour afficher les erreurs sous forme d'exceptions
     $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

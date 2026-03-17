@@ -49,9 +49,19 @@ $category_books = $stmt->fetch(PDO::FETCH_ASSOC);
             <form class="needs-validation" novalidate action="" method="post" enctype="multipart/form-data">
                 <div class="row mt-3">
                     <div class="col-lg-12 col-sm-12 mb-3">
+
+
+                    <div class="mb-3">
+                            <label for="category_code" class="form-label">Code <span class="text-danger fs-5">*</span></label>
+                            <input type="text" value="<?= htmlspecialchars($category_books['category_code']) ?>" required class="form-control shadow-none" id="category_code" name="category_code">
+                            <div class="invalid-feedback">
+                                Ce champ est requis !
+                            </div>
+                        </div>
+
                         <div class="mb-3">
                             <label for="category_name " class="form-label">Nom de la catégorie <span class="text-danger fs-5">*</span></label>
-                            <input type="text" required class="form-control form-control-lg" id="category_name" name="category_name"
+                            <input type="text" required class="form-control shadow-none" id="category_name" name="category_name"
                             value="<?= htmlspecialchars($category_books['category_name']) ?>">
                             <div class="invalid-feedback">
                                 Ce champ est requis !
@@ -59,7 +69,7 @@ $category_books = $stmt->fetch(PDO::FETCH_ASSOC);
                         </div>
                         <div class="mb-3">
                             <label for="category_description" class="form-label">Description</label>
-                            <textarea style="height:100px" class="form-control form-control-lg" id="category_description" name="category_description" rows="4"><?= htmlspecialchars($category_books['category_description']) ?></textarea>
+                            <textarea style="height:100px" class="form-control shadow-none" id="category_description" name="category_description" rows="4"><?= htmlspecialchars($category_books['category_description']) ?></textarea>
                         </div>
                     </div>
                     </div>

@@ -29,15 +29,22 @@
                 <div class="row mt-3">
                     <div class="col-lg-12 col-sm-12 mb-3">
                         <div class="mb-3">
+                            <label for="category_code" class="form-label">Code <span class="text-danger fs-5">*</span></label>
+                            <input type="text" required value="<?= $_POST['category_code'] ?? '' ?>" class="form-control shadow-none" id="category_code" name="category_code">
+                            <div class="invalid-feedback">
+                                Ce champ est requis !
+                            </div>
+                        </div>
+                        <div class="mb-3">
                             <label for="category_name" class="form-label">Nom de la catégorie <span class="text-danger fs-5">*</span></label>
-                            <input type="text" required value="<?= $_POST['category_name'] ?? '' ?>" class="form-control form-control-lg" id="category_name" name="category_name">
+                            <input type="text" required value="<?= $_POST['category_name'] ?? '' ?>" class="form-control shadow-none" id="category_name" name="category_name">
                             <div class="invalid-feedback">
                                 Ce champ est requis !
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="category_description" class="form-label">Description</label>
-                            <textarea class="form-control" style="height:" id="category_description" name="category_description" rows="2"><?= $_POST['category_description'] ?? '' ?></textarea>
+                            <textarea class="form-control shadow-none" style="height:100px" id="category_description" name="category_description" rows="2"><?= $_POST['category_description'] ?? '' ?></textarea>
                         </div>
                     </div>
                 </div>

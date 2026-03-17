@@ -9,44 +9,65 @@ $success = "";
 if (isset($_POST['submit'])) {
 
     $category_name = trim(htmlspecialchars($_POST['category_name'] ?? ''));
+    $category_code = trim(htmlspecialchars($_POST['category_code'] ?? ''));
     $category_description = trim(htmlspecialchars($_POST['category_description'] ?? ''));
 
     // Vérification des champs obligatoires
-    if (empty($category_name)) {
-        $erreur = "Veuillez saisir le nom de la catégorie !";
+    if (empty($category_name) || empty($category_code)) {
+        $erreur = "Tous les champs sont requis";
     } else {
+
         $added_by = $_SESSION['user_uuid'] ?? null;
 
         if (!$added_by) {
             $erreur = "Erreur d'authentification : session expirée. Veuillez vous reconnecter.";
         } else {
+
             try {
-                // Vérifier si la catégorie existe déjà
-                $checkQuery = "SELECT category_name FROM category_books 
-                               WHERE category_name = :category_name AND is_deleted = 0 LIMIT 1";
+
+                // Vérifier si le nom ou le code existe déjà
+                $checkQuery = "SELECT category_name, category_code 
+                               FROM category_books 
+                               WHERE (category_name = :category_name 
+                               OR category_code = :category_code) 
+                               AND is_deleted = 0 
+                               LIMIT 1";
 
                 $stmtCheck = $connexion->prepare($checkQuery);
-                $stmtCheck->execute([':category_name' => $category_name]);
-                $existingCategory = $stmtCheck->fetch();
+                $stmtCheck->execute([
+                    ':category_name' => $category_name,
+                    ':category_code' => $category_code
+                ]);
+
+                $existingCategory = $stmtCheck->fetch(PDO::FETCH_ASSOC);
 
                 if ($existingCategory) {
-                    $erreur = "Cette catégorie existe déjà.";
+
+                    if ($existingCategory['category_name'] === $category_name) {
+                        $erreur = "Cette catégorie existe déjà.";
+                    } elseif ($existingCategory['category_code'] === $category_code) {
+                        $erreur = "Ce code de catégorie existe déjà.";
+                    }
+
                 } else {
-                    $category_uuid = bin2hex(random_bytes(16)); 
+
+                    $category_uuid = bin2hex(random_bytes(16));
 
                     $query = "INSERT INTO category_books (
                                 category_uuid, 
                                 category_name, 
+                                category_code,
                                 category_description, 
                                 added_by
-                              ) VALUES (?, ?, ?, ?)";
+                              ) VALUES (?, ?, ?, ?, ?)";
 
                     $stmt = $connexion->prepare($query);
                     $stmt->execute([
                         $category_uuid,
                         $category_name,
+                        $category_code,
                         $category_description,
-                        $added_by,
+                        $added_by
                     ]);
 
                     $success = "Catégorie de livres enregistrée avec succès !";
@@ -55,7 +76,8 @@ if (isset($_POST['submit'])) {
 
             } catch (PDOException $e) {
                 $erreur = "Erreur technique : " . $e->getMessage();
-            } // <-- fin du catch
+            }
+
         }
     }
 }

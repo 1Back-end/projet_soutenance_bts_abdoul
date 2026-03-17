@@ -31,7 +31,8 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Categorie</th>
+                            <th>Code</th>
+                            <th>Libellé</th>
                             <th>Description</th>
                             <th>Statut</th>
                             <th>Date de creation</th>
@@ -44,6 +45,7 @@
                             <?php foreach ($all_category_books as $index => $category_book): ?>
                                 <tr>
                                     <td><?= $index + 1 ?></td>
+                                    <td><?= htmlspecialchars($category_book['category_code']) ?></td>
                                     <td><?= htmlspecialchars($category_book['category_name']) ?></td>
                                     <td><?= htmlspecialchars($category_book['category_description']) ?></td>
                                     <td>
